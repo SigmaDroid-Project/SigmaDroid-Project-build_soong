@@ -119,7 +119,7 @@ func kotlinCompile(ctx android.ModuleContext, outputFile, headerOutputFile andro
 			"srcJarDir":         android.PathForModuleOut(ctx, "kotlinc", "srcJars").String(),
 			"kotlinBuildFile":   android.PathForModuleOut(ctx, "kotlinc-build.xml").String(),
 			"emptyDir":          android.PathForModuleOut(ctx, "kotlinc", "empty").String(),
-			"kotlinJvmTarget":   flags.javaVersion.StringForKotlinc(),
+			"kotlinJvmTarget":   "1.8",
 			"name":              kotlinName,
 		},
 	})
