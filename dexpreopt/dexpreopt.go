@@ -394,7 +394,6 @@ func dexpreoptCommand(ctx android.PathContext, globalSoong *GlobalSoongConfig, g
 	if !android.PrefixInList(preoptFlags, "--compiler-filter=") {
 		var compilerFilter string
 		if systemServerJars.ContainsJar(module.Name) {
-			// Jars of system server, use the product option if it is set, speed otherwise.
 			if global.SystemServerCompilerFilter != "" {
 				// Use the product option if it is set.
 				compilerFilter = global.SystemServerCompilerFilter
