@@ -44,7 +44,7 @@ var (
 			"-march=armv8.2-a+dotprod",
 		},
 		"armv9-a": []string{
-			"-march=armv8.2-a+dotprod",
+			"-march=armv9-a+nosve",
 			"-mbranch-protection=standard",
 			"-fno-stack-protector",
 		},
