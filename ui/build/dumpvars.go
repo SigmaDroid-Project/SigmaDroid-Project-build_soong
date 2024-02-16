@@ -162,7 +162,7 @@ var BannerVars = []string{
 	"BUILD_ID",
 	"OUT_DIR",
 	"PRODUCT_IS_ATV",
-	"PRODUCT_IS_AUTO",
+	"PRODUCT_IS_AUTOMOTIVE",
 	"WITH_SU",
 	"WITH_GMS",
 	"GMS_MAKEFILE",

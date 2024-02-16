@@ -100,8 +100,6 @@ func (lto *lto) flags(ctx BaseModuleContext, flags Flags) Flags {
 
 		if lto.ThinLTO() {
 			ltoCFlags = append(ltoCFlags, "-flto=thin -fsplit-lto-unit")
-			ltoLdFlags = append(ltoLdFlags, "-Wl,--lto-O3")
-			ltoCFlags = append(ltoCFlags, "-O3")
 		} else {
 			// The module did not explicitly turn on LTO. Only leverage LTO's
 			// better dead code elinmination and CFG simplification, but do
@@ -109,12 +107,6 @@ func (lto *lto) flags(ctx BaseModuleContext, flags Flags) Flags {
 			// time, binary size and performance.
 			ltoCFlags = append(ltoCFlags, "-flto=thin -fsplit-lto-unit")
 			ltoLdFlags = append(ltoLdFlags, "-Wl,--lto-O0")
-		}
-
-		if !ctx.isPgoCompile() && !ctx.isAfdoCompile() {
-			ltoLdFlags = append(ltoLdFlags, "-Wl,-mllvm,-inline-threshold=600")
-			ltoLdFlags = append(ltoLdFlags, "-Wl,-mllvm,-inlinehint-threshold=750")
-			ltoLdFlags = append(ltoLdFlags, "-Wl,-mllvm,-unroll-threshold=600")
 		}
 
 		// Enable Polly globally
@@ -157,6 +149,12 @@ func (lto *lto) flags(ctx BaseModuleContext, flags Flags) Flags {
 		// Register allocation MLGO flags for ARM64.
 		if ctx.Arch().ArchType == android.Arm64 {
 			ltoLdFlags = append(ltoLdFlags, "-Wl,-mllvm,-regalloc-enable-advisor=release")
+		}
+
+		// For ML training
+		if ctx.Config().IsEnvTrue("THINLTO_EMIT_INDEXES_AND_IMPORTS") {
+			ltoLdFlags = append(ltoLdFlags, "-Wl,--save-temps=import")
+			ltoLdFlags = append(ltoLdFlags, "-Wl,--thinlto-emit-index-files")
 		}
 
 		flags.Local.CFlags = append(flags.Local.CFlags, ltoCFlags...)
